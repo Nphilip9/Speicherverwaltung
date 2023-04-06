@@ -1,0 +1,2 @@
+# Speicherwaltung
+Speicherverwaltungssoftware mit LinkedLists
