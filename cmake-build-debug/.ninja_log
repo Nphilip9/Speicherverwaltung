@@ -1,0 +1,27 @@
+# ninja log v5
+0	134	7024824926763322	CMakeFiles/Speicherverwaltung.dir/src/main.c.obj	74d88b12df19952d
+135	279	7024824928173578	Speicherverwaltung.exe	4779976f5d02e13c
+3	111	7024828755646332	CMakeFiles/Speicherverwaltung.dir/src/main.c.obj	74d88b12df19952d
+112	240	7024828756844098	Speicherverwaltung.exe	4779976f5d02e13c
+2	76	7024828958562307	CMakeFiles/Speicherverwaltung.dir/src/main.c.obj	74d88b12df19952d
+77	176	7024828959496682	Speicherverwaltung.exe	4779976f5d02e13c
+2	85	7024829470390046	CMakeFiles/Speicherverwaltung.dir/src/main.c.obj	74d88b12df19952d
+85	197	7024829471483749	Speicherverwaltung.exe	4779976f5d02e13c
+3	75	7024829787430108	CMakeFiles/Speicherverwaltung.dir/src/main.c.obj	74d88b12df19952d
+76	174	7024829788369016	Speicherverwaltung.exe	4779976f5d02e13c
+3	88	7024829953258918	CMakeFiles/Speicherverwaltung.dir/src/main.c.obj	74d88b12df19952d
+3	114	7024830085842763	Speicherverwaltung.exe	4779976f5d02e13c
+3	87	7024831076001330	CMakeFiles/Speicherverwaltung.dir/src/main.c.obj	74d88b12df19952d
+87	198	7024831077078044	Speicherverwaltung.exe	4779976f5d02e13c
+2	78	7024831152309375	CMakeFiles/Speicherverwaltung.dir/src/main.c.obj	74d88b12df19952d
+78	176	7024831153251057	Speicherverwaltung.exe	4779976f5d02e13c
+2	76	7024831281173624	CMakeFiles/Speicherverwaltung.dir/src/main.c.obj	74d88b12df19952d
+77	173	7024831282086840	Speicherverwaltung.exe	4779976f5d02e13c
+2	83	7024831618691034	CMakeFiles/Speicherverwaltung.dir/src/main.c.obj	74d88b12df19952d
+84	190	7024831619716225	Speicherverwaltung.exe	4779976f5d02e13c
+2	86	7024832269091586	CMakeFiles/Speicherverwaltung.dir/src/main.c.obj	74d88b12df19952d
+86	199	7024832270200899	Speicherverwaltung.exe	4779976f5d02e13c
+2	83	7024832438348522	CMakeFiles/Speicherverwaltung.dir/src/main.c.obj	74d88b12df19952d
+84	191	7024832439399039	Speicherverwaltung.exe	4779976f5d02e13c
+2	76	7024832499979117	CMakeFiles/Speicherverwaltung.dir/src/main.c.obj	74d88b12df19952d
+76	176	7024832500927708	Speicherverwaltung.exe	4779976f5d02e13c

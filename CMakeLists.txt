@@ -3,4 +3,4 @@ project(Speicherverwaltung C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(Speicherverwaltung main.c)
+add_executable(Speicherverwaltung src/main.c src/main.h)
