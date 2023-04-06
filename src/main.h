@@ -7,9 +7,11 @@
         struct node *next;
     } NODE;
 
+    extern void menu();
     extern void createNewElement(int, char *);
     extern void printList();
-    extern void addProcess(char *, int);
+    extern void addProcess(int, int, char *, int);
+    extern void removeProcess(char *);
 
     extern int bestFit(unsigned int);
     extern int firstFit(unsigned int);

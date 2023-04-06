@@ -1,23 +1,59 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "main.h"
 
 NODE *head = NULL;
 int nextFitLastAllocated = 0;
 
 int main() {
-    // Allocate memory
+    // Speicher vorreservieren
     for (int i = 0; i < SIZE; ++i) {
         createNewElement(0, "Hole");
     }
+    srand(time(NULL));
 
-    addProcess("P1", 23);
-    addProcess("P2", 45);
-
-    printList();
-
+    menu();
     return 0;
+}
+
+void menu() {
+    while(1) {
+        int action, memSize, algorithm;
+        char *pName = malloc(10 * sizeof(char));
+        printf("Was moechtest du machen?\n");
+        printf("1. Prozess zu Speicher hinzufuegen\n");
+        printf("2. Prozess aus Speicher loeschen\n");
+        printf("3. Speicher ausgeben\n");
+        scanf("%d", &action);
+        switch (action) {
+            case 1:
+                printf("Wie viel Speicher moechtest du verwenden?\n");
+                scanf("%d", &memSize);
+                printf("Wie soll der Prozess heissen?\n");
+                scanf("%s", pName);
+                getchar();
+                printf("Welchen Algorithmus moechtest du verwenden?\n");
+                printf("1. Best Fit\n");
+                printf("2. First Fit\n");
+                printf("3. Next Fit\n");
+                printf("4. Worst Fit\n");
+                scanf("%d", &algorithm);
+                addProcess(algorithm, memSize, pName, rand() % 1000 + 1);
+                break;
+            case 2:
+                printf("Gib den Namen des Prozesses ein den du löschen möchtest: ");
+                scanf("%s", pName);
+                removeProcess(pName);
+                break;
+            case 3:
+                printList();
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 void createNewElement(int data, char *name) {
@@ -37,11 +73,24 @@ void createNewElement(int data, char *name) {
     }
 }
 
-void addProcess(char *newName, int newData) {
-    int firstFitIndex = bestFit(5);
-    printf("%d", firstFitIndex);
-    int index = firstFitIndex;
+void addProcess(int algorithm, int size, char *newName, int newData) {
+    int firstFitIndex = 0;
+    switch (algorithm) {
+        case 1:
+            firstFitIndex = bestFit(size);
+            break;
+        case 2:
+            firstFitIndex = firstFit(size);
+            break;
+        case 3:
+            firstFitIndex = nextFit(size);
+            break;
+        case 4:
+            firstFitIndex = worstFit(size);
+            break;
+    }
 
+    int index = firstFitIndex;
     int count = 0;
     NODE *firstElement = head;
     while(firstElement->next != NULL && count != firstFitIndex) {
@@ -51,7 +100,7 @@ void addProcess(char *newName, int newData) {
 
     NODE *currentFitElement = firstElement;
     printf("%p\n", currentFitElement);
-    while(currentFitElement->next != NULL && index != firstFitIndex + 5) {
+    while(currentFitElement->next != NULL && index != firstFitIndex + size) {
         currentFitElement->data = newData;
         currentFitElement->name = newName;
         index++;
@@ -74,6 +123,31 @@ int firstFit(unsigned int size) {
         }
         index++;
     }
+    return -1;
+}
+
+int nextFit(unsigned int size) {
+    int nextBlockIndex = nextFitLastAllocated;
+    int blockSize = 0;
+    // while (blockSize < size) {
+    for (NODE *current = head; current != NULL; current = current->next) {
+        if(blockSize < size) {
+            if (strcmp(current->name, "Hole") == 0) { // 0 bedeutet, dass der Speicherplatz frei ist
+                blockSize++;
+            } else {
+                blockSize = 0;
+            }
+            nextBlockIndex = (nextBlockIndex + 1) % SIZE;
+            if (nextBlockIndex == nextFitLastAllocated) { // Wir haben den Speicher einmal durchsucht
+                break;
+            }
+        }
+    }
+    if (blockSize < size) {
+        nextBlockIndex = -1;
+    }
+    nextFitLastAllocated = nextBlockIndex - size;
+    return nextBlockIndex - size;
 }
 
 int bestFit(unsigned int pSize) {
@@ -132,6 +206,17 @@ void printList() {
     NODE *current = head;
     while(current != NULL) {
         printf("Name: %s | Inhalt: %d | Addresse: %p\n", current->name, current->data, current);
+        current = current->next;
+    }
+}
+
+void removeProcess(char *pName) {
+    NODE *current = head;
+    while(current->next != NULL) {
+        if(strcmp(current->name, pName) == 0) {
+            current->data = 0;
+            current->name = "Hole";
+        }
         current = current->next;
     }
 }
