@@ -5,11 +5,12 @@
 #include "main.h"
 
 NODE *head = NULL;
+// TODO: check next Fit algorithm (maybe storing last location incorrect)
 int nextFitLastAllocated = 0;
 
 int main() {
     // Speicher vorreservieren
-    for (int i = 0; i < SIZE; ++i) {
+    for (int i = 0; i < MEMORY_SIZE; ++i) {
         createNewElement(0, "Hole");
     }
     srand(time(NULL));
@@ -21,7 +22,7 @@ int main() {
 void menu() {
     while(1) {
         int action, memSize, algorithm;
-        char *pName = malloc(10 * sizeof(char));
+        char *pName = malloc(MAX_PROCESS_NAME_LENGTH * sizeof(char));
         printf("Was moechtest du machen?\n");
         printf("1. Prozess zu Speicher hinzufuegen\n");
         printf("2. Prozess aus Speicher loeschen\n");
@@ -99,7 +100,6 @@ void addProcess(int algorithm, int size, char *newName, int newData) {
     }
 
     NODE *currentFitElement = firstElement;
-    printf("%p\n", currentFitElement);
     while(currentFitElement->next != NULL && index != firstFitIndex + size) {
         currentFitElement->data = newData;
         currentFitElement->name = newName;
@@ -108,7 +108,6 @@ void addProcess(int algorithm, int size, char *newName, int newData) {
     }
 }
 
-// FirstFit sucht den ersten frien Speicherplatz der grossgenug ist
 int firstFit(unsigned int size) {
     int counter = 0;
     int index = 0;
@@ -129,7 +128,6 @@ int firstFit(unsigned int size) {
 int nextFit(unsigned int size) {
     int nextBlockIndex = nextFitLastAllocated;
     int blockSize = 0;
-    // while (blockSize < size) {
     for (NODE *current = head; current != NULL; current = current->next) {
         if(blockSize < size) {
             if (strcmp(current->name, "Hole") == 0) { // 0 bedeutet, dass der Speicherplatz frei ist
@@ -137,7 +135,7 @@ int nextFit(unsigned int size) {
             } else {
                 blockSize = 0;
             }
-            nextBlockIndex = (nextBlockIndex + 1) % SIZE;
+            nextBlockIndex = (nextBlockIndex + 1) % MEMORY_SIZE;
             if (nextBlockIndex == nextFitLastAllocated) { // Wir haben den Speicher einmal durchsucht
                 break;
             }
@@ -179,7 +177,6 @@ int bestFit(unsigned int pSize) {
     return bestBlockIndex;
 }
 
-// WorstFit sucht den größtmöglichen freien Speicherplatz
 int worstFit(unsigned int size) {
     int worstBlockIndex = -1;
     int largestBlockSize = 0;
@@ -188,7 +185,7 @@ int worstFit(unsigned int size) {
         if (current->data == 0) {
             int blockSize = 0;
             int j = index;
-            while (j != SIZE && current->data == 0) {
+            while (j != MEMORY_SIZE && current->data == 0) {
                 blockSize++;
                 j++;
             }
