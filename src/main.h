@@ -14,6 +14,7 @@
     extern void printList();
     extern void addProcess(int, int, char *, int);
     extern void removeProcess(char *);
+    extern void freeAndExit();
 
     // FirstFit sucht den ersten frien Speicherplatz der grossgenug ist
     extern int firstFit(unsigned int);

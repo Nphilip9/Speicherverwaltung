@@ -5,14 +5,15 @@
 #include "main.h"
 
 NODE *head = NULL;
-// TODO: check next Fit algorithm (maybe storing last location incorrect)
 int nextFitLastAllocated = 0;
 
 int main() {
-    // Speicher vorreservieren
-    for (int i = 0; i < MEMORY_SIZE; ++i) {
+    // Speicher vorreservieren. Register Schlüsselwort für schnelleren Aufruf der variable i
+    for (register int i = 0; i < MEMORY_SIZE; ++i) {
         createNewElement(0, "Hole");
     }
+
+    // Initialisieren der srand funktion für abwechselnde Zufallszahlen
     srand(time(NULL));
 
     menu();
@@ -27,6 +28,7 @@ void menu() {
         printf("1. Prozess zu Speicher hinzufuegen\n");
         printf("2. Prozess aus Speicher loeschen\n");
         printf("3. Speicher ausgeben\n");
+        printf("4. Exit\n");
         scanf("%d", &action);
         switch (action) {
             case 1:
@@ -51,6 +53,8 @@ void menu() {
             case 3:
                 printList();
                 break;
+            case 4:
+                freeAndExit();
             default:
                 break;
         }
@@ -88,6 +92,8 @@ void addProcess(int algorithm, int size, char *newName, int newData) {
             break;
         case 4:
             firstFitIndex = worstFit(size);
+            break;
+        default:
             break;
     }
 
@@ -216,4 +222,15 @@ void removeProcess(char *pName) {
         }
         current = current->next;
     }
+}
+
+void freeAndExit() {
+    NODE *current = head;
+
+    while (head != NULL) {
+        current = head;
+        head = head->next;
+        free(current);
+    }
+    exit(EXIT_SUCCESS);
 }
