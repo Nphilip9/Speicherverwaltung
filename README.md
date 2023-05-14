@@ -10,6 +10,27 @@
 >  3. WorstFit
 >  4. BestFit
 
+# Inhaltsangabe
+ * [Features](#features)
+ * [Verwendung mit CLion](#verwendung-mit-clion)
+ * [Verwendung ohne CLion](#verwendung-ohne-clion)
+ * [Algorithmen](#algorithmen)
+ * [Code](#code)
+
+# Features
+Menu:
+```text
+1. Prozess zu Speicher hinzufuegen
+2. Prozess aus Speicher loeschen
+3. Speicher ausgeben
+4. Exit
+```
+
+* Hinzufügen von Prozessen zum RAM-Speicher, die grösse kann angegeben werden, der Name des Prozesses ist frei wählbar und man kann zwischen [4 Algorithmen](#algorithmen) aussuchen
+* Durch die möglichkeit Prozesse auch wieder zu entfernen, kann der RAM-Speicher besser simuliert werden, das Programm muss nicht beendet werden, um belegten Speicher freizugeben. 
+* Man kann sich den RAM-Speicher ausgeben lassen, und kann somit feststellen, ob die Simulation korrekt funktioniert 
+* Durch das Beenden mit einem "Clean-Up" (mit der funktion `free()` wird die Liste deallokiert) können sogenannte Memory-Leaks verhindert werden
+
 # Verwendung mit CLion
   1. Um das Projekt verwenden zu können muss es ([Speicherverwaltung](https://github.com/Nphilip9/Speicherverwaltung/)) zunächst heruntergeladen und entpackt werden.
   2. Öffnen Sie das Projekt in CLion
@@ -24,10 +45,10 @@
 # Algorithmen
 | Algorithmus                    | Beschreibung                                                                                                 |
 |:-------------------------------|:-------------------------------------------------------------------------------------------------------------|
-| [`First Fit`](src/main.c#L117) | sucht den ersten freien Speicherplatz der gross genug ist                                                    |
-| [`Next Fit`](src/main.c#L134)  | sucht ab dem zuletzt verwendeten Speicherblock den nächsten verfügbaren Speicherplatz für einen neuen Block. |
-| [`Best Fit`](src/main.c#L162)  | Sucht die kleinst mögliche lücke die gleich gross oder größer ist als der angeforderte Speicher              |
-| [`Worst Fit`](src/main.c#L191) | sucht den größtmöglichen freien Speicherplatz                                                                |
+| [`First Fit`](src/main.c#L136) | sucht den ersten freien Speicherplatz der gross genug ist                                                    |
+| [`Next Fit`](src/main.c#L153)  | sucht ab dem zuletzt verwendeten Speicherblock den nächsten verfügbaren Speicherplatz für einen neuen Block. |
+| [`Best Fit`](src/main.c#L181)  | Sucht die kleinst mögliche lücke die gleich gross oder größer ist als der angeforderte Speicher              |
+| [`Worst Fit`](src/main.c#L210) | sucht den größtmöglichen freien Speicherplatz                                                                |
 
 # Code
 Diese Zeile kann verändert werden um den simulierten RAM-Speicher zu vergrössern oder zu verkleinern.
