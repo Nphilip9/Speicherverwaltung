@@ -5,16 +5,16 @@
 #include "main.h"
 
 NODE *head = NULL;
-int nextFitLastAllocated = 0;
+NODE *lastElement = NULL;
 
 int main() {
+    // Initialisieren der srand funktion für abwechselnde Zufallszahlen
+    srand(time(NULL));
+
     // Speicher vorreservieren. Register Schlüsselwort für schnelleren Aufruf der variable i
     for (register int i = 0; i < MEMORY_SIZE; ++i) {
         createNewElement(0, "Hole");
     }
-
-    // Initialisieren der srand funktion für abwechselnde Zufallszahlen
-    srand(time(NULL));
 
     menu();
     return 0;
@@ -46,7 +46,7 @@ void menu() {
                 addProcess(algorithm, memSize, pName, rand() % 1000 + 1);
                 break;
             case 2:
-                printf("Gib den Namen des Prozesses ein den du löschen möchtest: ");
+                printf("Gib den Namen des Prozesses ein den du loeschen moechtest: ");
                 scanf("%s", pName);
                 removeProcess(pName);
                 break;
@@ -79,34 +79,34 @@ void createNewElement(int data, char *name) {
 }
 
 void addProcess(int algorithm, int size, char *newName, int newData) {
-    int firstFitIndex = 0;
+    int firstIndex = 0;
     switch (algorithm) {
-        case 1:
-            firstFitIndex = bestFit(size);
+        case ALGORITHM_BEST_FIT:
+            firstIndex = bestFit(size);
             break;
-        case 2:
-            firstFitIndex = firstFit(size);
+        case ALGORITHM_FIRST_FIT:
+            firstIndex = firstFit(size);
             break;
-        case 3:
-            firstFitIndex = nextFit(size);
+        case ALGORITHM_NEXT_FIT:
+            firstIndex = nextFit(size);
             break;
-        case 4:
-            firstFitIndex = worstFit(size);
+        case ALGORITHM_WORST_FIT:
+            firstIndex = worstFit(size);
             break;
         default:
             break;
     }
 
-    int index = firstFitIndex;
+    int index = firstIndex;
     int count = 0;
     NODE *firstElement = head;
-    while(firstElement->next != NULL && count != firstFitIndex) {
+    while(firstElement->next != NULL && count != firstIndex) {
         firstElement = firstElement->next;
         count++;
     }
 
     NODE *currentFitElement = firstElement;
-    while(currentFitElement->next != NULL && index != firstFitIndex + size) {
+    while(currentFitElement->next != NULL && index != firstIndex + size) {
         currentFitElement->data = newData;
         currentFitElement->name = newName;
         index++;
@@ -132,26 +132,31 @@ int firstFit(unsigned int size) {
 }
 
 int nextFit(unsigned int size) {
-    int nextBlockIndex = nextFitLastAllocated;
+    if(lastElement == NULL) {
+        lastElement = head;
+    }
+    static int i = 0;
     int blockSize = 0;
-    for (NODE *current = head; current != NULL; current = current->next) {
-        if(blockSize < size) {
-            if (strcmp(current->name, "Hole") == 0) { // 0 bedeutet, dass der Speicherplatz frei ist
-                blockSize++;
+
+    for (NODE *current = lastElement->next; current != lastElement; current = current->next) {
+        if(current->next != NULL) {
+            if (blockSize < size) {
+                if (strcmp(current->name, "Hole") == 0) {
+                    blockSize++;
+                } else {
+                    blockSize = 0;
+                }
+                i++;
             } else {
-                blockSize = 0;
-            }
-            nextBlockIndex = (nextBlockIndex + 1) % MEMORY_SIZE;
-            if (nextBlockIndex == nextFitLastAllocated) { // Wir haben den Speicher einmal durchsucht
+                lastElement = current;
                 break;
             }
+        } else {
+            current = head;
+            i = 0;
         }
     }
-    if (blockSize < size) {
-        nextBlockIndex = -1;
-    }
-    nextFitLastAllocated = nextBlockIndex - size;
-    return nextBlockIndex - size;
+    return i - size;
 }
 
 int bestFit(unsigned int pSize) {
