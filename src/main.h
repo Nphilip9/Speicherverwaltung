@@ -6,8 +6,8 @@
 #define ALGORITHM_NEXT_FIT 3
 #define ALGORITHM_WORST_FIT 4
 
-#define MEMORY_SIZE 64
-#define MAX_PROCESS_NAME_LENGTH 10
+#define MEMORY_SIZE 128
+#define MAX_PROCESS_NAME_LENGTH 5
     typedef struct node {
         int data;
         char *name;
@@ -20,6 +20,9 @@
     extern void removeProcess(char *);
     extern void printList();
     extern void freeAndExit();
+
+    extern int processExists(char *);
+    extern int getFreeMemSize();
 
     // FirstFit sucht den ersten frien Speicherplatz der grossgenug ist
     extern int firstFit(unsigned int);

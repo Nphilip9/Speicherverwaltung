@@ -22,7 +22,7 @@ int main() {
 
 void menu() {
     while(1) {
-        int action, memSize, algorithm;
+        int action, memSize, algorithm, freeMemSize;
         char *pName = malloc(MAX_PROCESS_NAME_LENGTH * sizeof(char));
         printf("Was moechtest du machen?\n");
         printf("1. Prozess zu Speicher hinzufuegen\n");
@@ -32,10 +32,28 @@ void menu() {
         scanf("%d", &action);
         switch (action) {
             case 1:
-                printf("Wie viel Speicher moechtest du verwenden?\n");
-                scanf("%d", &memSize);
-                printf("Wie soll der Prozess heissen?\n");
-                scanf("%s", pName);
+                freeMemSize = getFreeMemSize();
+                printf("Wie viel Speicher moechtest du verwenden? (Freier Speicherplatz: %d Bit)\n", freeMemSize);
+                do {
+                    scanf("%d", &memSize);
+                    if(memSize > freeMemSize) {
+                        printf("Die eingegebene groesse ist zu gross! Freier Speicherplatz: %d Bit\n", freeMemSize);
+                    } else {
+                        break;
+                    }
+                } while(1);
+                do {
+                    printf("Geben Sie einen Namen fuer den Prozess (max. %d Zeichen) ein: ", MAX_PROCESS_NAME_LENGTH);
+                    scanf("%s", pName);
+                    if (processExists(pName) != 0) {
+                        printf("Dieser Prozess existiert bereits! Waehle einen anderen Namen oder loeschen den anderen Prozess\n");
+                    } else if (strlen(pName) > MAX_PROCESS_NAME_LENGTH) {
+                        printf("Dieser Name ist zu lang er darf nur maximal %d zeichen lang sein!\n",
+                               MAX_PROCESS_NAME_LENGTH);
+                    } else {
+                        break;
+                    }
+                } while (1);
                 getchar();
                 printf("Welchen Algorithmus moechtest du verwenden?\n");
                 printf("1. Best Fit\n");
@@ -55,6 +73,7 @@ void menu() {
                 break;
             case 4:
                 freeAndExit();
+                break;
             default:
                 break;
         }
@@ -212,8 +231,10 @@ int worstFit(unsigned int size) {
 
 void printList() {
     NODE *current = head;
+    int i = 0;
     while(current != NULL) {
-        printf("Name: %s | Inhalt: %d | Addresse: %p\n", current->name, current->data, current);
+        i++;
+        printf("Nr. %d: Name: %s | Inhalt: %d | Addresse: %p\n", i, current->name, current->data, current);
         current = current->next;
     }
 }
@@ -227,6 +248,28 @@ void removeProcess(char *pName) {
         }
         current = current->next;
     }
+}
+
+int processExists(char *pName) {
+    int exists = 0;
+    for(NODE *current = head; current != NULL; current = current->next) {
+        if(strcmp(current->name, pName) == 0) {
+            exists = 1;
+            printf("Yes");
+            break;
+        }
+    }
+    return exists;
+}
+
+int getFreeMemSize() {
+    int freeMemSize = 0;
+    for(NODE *current = head; current != NULL; current = current->next) {
+        if(strcmp(current->name, "Hole") == 0) {
+            freeMemSize++;
+        }
+    }
+    return freeMemSize;
 }
 
 void freeAndExit() {
