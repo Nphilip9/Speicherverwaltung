@@ -22,12 +22,12 @@
   4. Führen Sie die Datei `Speicherverwaltung.exe` mit dem Befehl `start Speicherverwaltung.exe` oder durch einen Doppelklick auf die Datei
 
 # Algorithmen
-| Algorithmus                   | Beschreibung                                                                                                 |
-|:------------------------------|:-------------------------------------------------------------------------------------------------------------|
-| [`First Fit`](src/main.c#117) | sucht den ersten freien Speicherplatz der grossgenug ist                                                     |
-| [`Next Fit`](src/main.c#134)  | sucht ab dem zuletzt verwendeten Speicherblock den nächsten verfügbaren Speicherplatz für einen neuen Block. |
-| [`Best Fit`](src/main.c#162)  | Sucht die kleinst mögliche lücke die gleich gross oder größer ist als der angeforderte Speicher              |
-| [`Worst Fit`](src/main.c#191) | sucht den größtmöglichen freien Speicherplatz                                                                |
+| Algorithmus                    | Beschreibung                                                                                                 |
+|:-------------------------------|:-------------------------------------------------------------------------------------------------------------|
+| [`First Fit`](src/main.c#L117) | sucht den ersten freien Speicherplatz der grossgenug ist                                                     |
+| [`Next Fit`](src/main.c#L134)  | sucht ab dem zuletzt verwendeten Speicherblock den nächsten verfügbaren Speicherplatz für einen neuen Block. |
+| [`Best Fit`](src/main.c#L162)  | Sucht die kleinst mögliche lücke die gleich gross oder größer ist als der angeforderte Speicher              |
+| [`Worst Fit`](src/main.c#L191) | sucht den größtmöglichen freien Speicherplatz                                                                |
 
 # Code
 Diese Zeile kann verändert werden um den simulierten RAM-Speicher zu vergrössern oder zu verkleinern.
