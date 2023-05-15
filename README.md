@@ -11,11 +11,18 @@
 >  4. BestFit
 
 # Inhaltsangabe
+ * [Systemanforderungen](#systemanforderungen)
  * [Features](#features)
  * [Verwendung mit CLion](#verwendung-mit-clion)
  * [Verwendung ohne CLion](#verwendung-ohne-clion)
  * [Algorithmen](#algorithmen)
  * [Code](#code)
+ * [Lizenz](#lizenz)
+
+# Systemanforderungen
+ * [`GNU-Compiler`](https://gcc.gnu.org/)
+ * [`C99`](https://de.wikipedia.org/wiki/C99#:~:text=C99%20steht%20f%C3%BCr%3A,Dunkelwolke%20aus%20dem%20Caldwell%2DKatalog)
+ * Empfohlen: [`CLion`](https://www.jetbrains.com/de-de/clion/)
 
 # Features
 Menu:
@@ -62,3 +69,26 @@ Diese Zeile kann verändert werden, um die Maximale länge festzulegen, die der 
 #define MAX_PROCESS_NAME_LENGTH 10
 ```
 
+
+# Lizenz
+MIT License
+
+Copyright (c) 2023 Neumair Philip
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

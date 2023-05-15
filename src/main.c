@@ -20,6 +20,9 @@ int main() {
     return 0;
 }
 
+/**
+ * @brief Menu der Speicherverwaltung
+ */
 void menu() {
     while(1) {
         int action, memSize, algorithm, freeMemSize;
@@ -80,6 +83,11 @@ void menu() {
     }
 }
 
+/**
+ * @brief Erstellt ein neues Element vom struct NODE
+ * @param data Inhalt des Prozesses
+ * @param name Name des Prozesses
+ */
 void createNewElement(int data, char *name) {
     NODE *newElement = malloc(sizeof(NODE));
     newElement->data = data;
@@ -97,6 +105,13 @@ void createNewElement(int data, char *name) {
     }
 }
 
+/**
+ * @brief Überschreibt die Liste mit den neuen Prozess
+ * @param algorithm Ausgewählte Algorithmus
+ * @param size Die grösse des Prozesses
+ * @param newName Der Name des Prozesses
+ * @param newData Inhalt des Prozesses
+ */
 void addProcess(int algorithm, int size, char *newName, int newData) {
     int firstIndex = 0;
     switch (algorithm) {
@@ -133,6 +148,11 @@ void addProcess(int algorithm, int size, char *newName, int newData) {
     }
 }
 
+/**
+ * @brief Sucht den ersten freien Speicherplatz der gross genug ist
+ * @param size Die grösse des Prozesses
+ * @return Gibt die Position der ersten freien Position an
+ */
 int firstFit(unsigned int size) {
     int counter = 0;
     int index = 0;
@@ -150,6 +170,11 @@ int firstFit(unsigned int size) {
     return -1;
 }
 
+/**
+ * @brief Fängt beim erstem Durchlauf, an der ersten Stelle der LinkedList an, merkt sich dann aber wo die Suche aufgehört hat, und startet die nächste Suche von dieser Stelle aus
+ * @param size Die grösse des Prozesses
+ * @return Gibt die Position der ersten freien Position an
+ */
 int nextFit(unsigned int size) {
     if(lastElement == NULL) {
         lastElement = head;
@@ -178,7 +203,12 @@ int nextFit(unsigned int size) {
     return i - size;
 }
 
-int bestFit(unsigned int pSize) {
+/**
+ * @brief Sucht die kleinst mögliche Lücke die entweder gleich gross oder größer ist als der angeforderte Speicher
+ * @param size Die grösse des Prozesses
+ * @return Gibt die Position der ersten freien Position an
+ */
+int bestFit(unsigned int size) {
     int bestBlockIndex = -1;
     int smallestBlockSize = 0;
     int index = 0;
@@ -189,14 +219,14 @@ int bestFit(unsigned int pSize) {
             // This loop counts each consecutive free block
             // It runs until the end of the list is reached or until the block size is greater than the requested size
             NODE *tmp = current;
-            while (tmp != NULL && strcmp(tmp->name, "Hole") == 0 && blockSize < pSize) {
+            while (tmp != NULL && strcmp(tmp->name, "Hole") == 0 && blockSize < size) {
                 blockSize++;
                 tmp = tmp->next;
                 j++;
             }
             // This if block checks if the block size is greater than or equal to the requested size and smaller than the current smallest block size found so far
             // If the condition is true, the smallest block size is updated and the index of the first block of the smallest size is also saved
-            if (blockSize >= pSize && (smallestBlockSize == 0 || blockSize < smallestBlockSize)) {
+            if (blockSize >= size && (smallestBlockSize == 0 || blockSize < smallestBlockSize)) {
                 bestBlockIndex = index;
                 smallestBlockSize = blockSize;
             }
@@ -207,6 +237,11 @@ int bestFit(unsigned int pSize) {
     return bestBlockIndex;
 }
 
+/**
+ * @brief Sucht den größtmöglichen freien Speicherplatz
+ * @param size Die grösse des Prozesses
+ * @return Gibt die Position der ersten freien Position an
+ */
 int worstFit(unsigned int size) {
     int worstBlockIndex = -1;
     int largestBlockSize = 0;
@@ -229,6 +264,9 @@ int worstFit(unsigned int size) {
     return worstBlockIndex;
 }
 
+/**
+ * @brief Gibt die Liste aus
+ */
 void printList() {
     NODE *current = head;
     int i = 0;
@@ -239,6 +277,10 @@ void printList() {
     }
 }
 
+/**
+ * @brief Löscht einen bestimmten Prozess
+ * @param pName Name des Prozesses
+ */
 void removeProcess(char *pName) {
     NODE *current = head;
     while(current->next != NULL) {
@@ -250,6 +292,11 @@ void removeProcess(char *pName) {
     }
 }
 
+/**
+ * @brief Schaut nach ob der angegebene Prozess bereits existiert
+ * @param pName Name des Prozesses
+ * @return 0 Wenn der Prozess nicht existiert
+ */
 int processExists(char *pName) {
     int exists = 0;
     for(NODE *current = head; current != NULL; current = current->next) {
@@ -261,6 +308,10 @@ int processExists(char *pName) {
     return exists;
 }
 
+/**
+ * @brief Berechnet wie viel noch Speicherplatz verfügbar ist
+ * @return Gibt den verfügbaren Speicherplatz zurück
+ */
 int getFreeMemSize() {
     int freeMemSize = 0;
     for(NODE *current = head; current != NULL; current = current->next) {
@@ -271,6 +322,9 @@ int getFreeMemSize() {
     return freeMemSize;
 }
 
+/**
+ * @brief De-allokiert die LinkedList und schliesst das Programm mit EXIT_SUCCESS
+ */
 void freeAndExit() {
     NODE *current;
     while (head != NULL) {

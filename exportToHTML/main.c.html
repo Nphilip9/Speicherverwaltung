@@ -1,0 +1,357 @@
+<html>
+<head>
+<title>main.c</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #bbb529;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6a8759;}
+.s3 { color: #cc7832;}
+.s4 { color: #808080;}
+.s5 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+main.c</font>
+</center></td></tr></table>
+<pre><span class="s0">#include </span><span class="s2">&lt;stdio.h&gt;</span>
+<span class="s0">#include </span><span class="s2">&lt;stdlib.h&gt;</span>
+<span class="s0">#include </span><span class="s2">&lt;string.h&gt;</span>
+<span class="s0">#include </span><span class="s2">&lt;time.h&gt;</span>
+<span class="s0">#include </span><span class="s2">&quot;main.h&quot;</span>
+
+<span class="s1">NODE *head = NULL</span><span class="s3">;</span>
+<span class="s1">NODE *lastElement = NULL</span><span class="s3">;</span>
+
+<span class="s3">int </span><span class="s1">main() {</span>
+    <span class="s4">// Initialisieren der srand funktion für abwechselnde Zufallszahlen</span>
+    <span class="s1">srand(time(NULL))</span><span class="s3">;</span>
+
+    <span class="s4">// Speicher vorreservieren. Register Schlüsselwort für schnelleren Aufruf der variable i</span>
+    <span class="s3">for </span><span class="s1">(</span><span class="s3">register int </span><span class="s1">i = </span><span class="s5">0</span><span class="s3">; </span><span class="s1">i &lt; MEMORY_SIZE</span><span class="s3">; </span><span class="s1">++i) {</span>
+        <span class="s1">createNewElement(</span><span class="s5">0</span><span class="s3">, </span><span class="s2">&quot;Hole&quot;</span><span class="s1">)</span><span class="s3">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">menu()</span><span class="s3">;</span>
+    <span class="s3">return </span><span class="s5">0</span><span class="s3">;</span>
+<span class="s1">}</span>
+
+<span class="s4">/** 
+ * @brief Menu der Speicherverwaltung 
+ */</span>
+<span class="s3">void </span><span class="s1">menu() {</span>
+    <span class="s3">while</span><span class="s1">(</span><span class="s5">1</span><span class="s1">) {</span>
+        <span class="s3">int </span><span class="s1">action</span><span class="s3">, </span><span class="s1">memSize</span><span class="s3">, </span><span class="s1">algorithm</span><span class="s3">, </span><span class="s1">freeMemSize</span><span class="s3">;</span>
+        <span class="s3">char </span><span class="s1">*pName = malloc(MAX_PROCESS_NAME_LENGTH * </span><span class="s3">sizeof</span><span class="s1">(</span><span class="s3">char</span><span class="s1">))</span><span class="s3">;</span>
+        <span class="s1">printf(</span><span class="s2">&quot;Was moechtest du machen?</span><span class="s3">\n</span><span class="s2">&quot;</span><span class="s1">)</span><span class="s3">;</span>
+        <span class="s1">printf(</span><span class="s2">&quot;1. Prozess zu Speicher hinzufuegen</span><span class="s3">\n</span><span class="s2">&quot;</span><span class="s1">)</span><span class="s3">;</span>
+        <span class="s1">printf(</span><span class="s2">&quot;2. Prozess aus Speicher loeschen</span><span class="s3">\n</span><span class="s2">&quot;</span><span class="s1">)</span><span class="s3">;</span>
+        <span class="s1">printf(</span><span class="s2">&quot;3. Speicher ausgeben</span><span class="s3">\n</span><span class="s2">&quot;</span><span class="s1">)</span><span class="s3">;</span>
+        <span class="s1">printf(</span><span class="s2">&quot;4. Exit</span><span class="s3">\n</span><span class="s2">&quot;</span><span class="s1">)</span><span class="s3">;</span>
+        <span class="s1">scanf(</span><span class="s2">&quot;%d&quot;</span><span class="s3">, </span><span class="s1">&amp;action)</span><span class="s3">;</span>
+        <span class="s3">switch </span><span class="s1">(action) {</span>
+            <span class="s3">case </span><span class="s5">1</span><span class="s1">:</span>
+                <span class="s1">freeMemSize = getFreeMemSize()</span><span class="s3">;</span>
+                <span class="s1">printf(</span><span class="s2">&quot;Wie viel Speicher moechtest du verwenden? (Freier Speicherplatz: %d Bit)</span><span class="s3">\n</span><span class="s2">&quot;</span><span class="s3">, </span><span class="s1">freeMemSize)</span><span class="s3">;</span>
+                <span class="s3">do </span><span class="s1">{</span>
+                    <span class="s1">scanf(</span><span class="s2">&quot;%d&quot;</span><span class="s3">, </span><span class="s1">&amp;memSize)</span><span class="s3">;</span>
+                    <span class="s3">if</span><span class="s1">(memSize &gt; freeMemSize) {</span>
+                        <span class="s1">printf(</span><span class="s2">&quot;Die eingegebene groesse ist zu gross! Freier Speicherplatz: %d Bit</span><span class="s3">\n</span><span class="s2">&quot;</span><span class="s3">, </span><span class="s1">freeMemSize)</span><span class="s3">;</span>
+                    <span class="s1">} </span><span class="s3">else </span><span class="s1">{</span>
+                        <span class="s3">break;</span>
+                    <span class="s1">}</span>
+                <span class="s1">} </span><span class="s3">while</span><span class="s1">(</span><span class="s5">1</span><span class="s1">)</span><span class="s3">;</span>
+                <span class="s3">do </span><span class="s1">{</span>
+                    <span class="s1">printf(</span><span class="s2">&quot;Geben Sie einen Namen fuer den Prozess (max. %d Zeichen) ein: &quot;</span><span class="s3">, </span><span class="s1">MAX_PROCESS_NAME_LENGTH)</span><span class="s3">;</span>
+                    <span class="s1">scanf(</span><span class="s2">&quot;%s&quot;</span><span class="s3">, </span><span class="s1">pName)</span><span class="s3">;</span>
+                    <span class="s3">if </span><span class="s1">(processExists(pName) != </span><span class="s5">0</span><span class="s1">) {</span>
+                        <span class="s1">printf(</span><span class="s2">&quot;Dieser Prozess existiert bereits! Waehle einen anderen Namen oder loeschen den anderen Prozess!</span><span class="s3">\n</span><span class="s2">&quot;</span><span class="s1">)</span><span class="s3">;</span>
+                    <span class="s1">} </span><span class="s3">else if </span><span class="s1">(strlen(pName) &gt; MAX_PROCESS_NAME_LENGTH) {</span>
+                        <span class="s1">printf(</span><span class="s2">&quot;Dieser Name ist zu lang er darf nur maximal %d zeichen lang sein!</span><span class="s3">\n</span><span class="s2">&quot;</span><span class="s3">,</span>
+                               <span class="s1">MAX_PROCESS_NAME_LENGTH)</span><span class="s3">;</span>
+                    <span class="s1">} </span><span class="s3">else </span><span class="s1">{</span>
+                        <span class="s3">break;</span>
+                    <span class="s1">}</span>
+                <span class="s1">} </span><span class="s3">while </span><span class="s1">(</span><span class="s5">1</span><span class="s1">)</span><span class="s3">;</span>
+                <span class="s1">getchar()</span><span class="s3">;</span>
+                <span class="s1">printf(</span><span class="s2">&quot;Welchen Algorithmus moechtest du verwenden?</span><span class="s3">\n</span><span class="s2">&quot;</span><span class="s1">)</span><span class="s3">;</span>
+                <span class="s1">printf(</span><span class="s2">&quot;1. Best Fit</span><span class="s3">\n</span><span class="s2">&quot;</span><span class="s1">)</span><span class="s3">;</span>
+                <span class="s1">printf(</span><span class="s2">&quot;2. First Fit</span><span class="s3">\n</span><span class="s2">&quot;</span><span class="s1">)</span><span class="s3">;</span>
+                <span class="s1">printf(</span><span class="s2">&quot;3. Next Fit</span><span class="s3">\n</span><span class="s2">&quot;</span><span class="s1">)</span><span class="s3">;</span>
+                <span class="s1">printf(</span><span class="s2">&quot;4. Worst Fit</span><span class="s3">\n</span><span class="s2">&quot;</span><span class="s1">)</span><span class="s3">;</span>
+                <span class="s1">scanf(</span><span class="s2">&quot;%d&quot;</span><span class="s3">, </span><span class="s1">&amp;algorithm)</span><span class="s3">;</span>
+                <span class="s1">addProcess(algorithm</span><span class="s3">, </span><span class="s1">memSize</span><span class="s3">, </span><span class="s1">pName</span><span class="s3">, </span><span class="s1">rand() % </span><span class="s5">1000 </span><span class="s1">+ </span><span class="s5">1</span><span class="s1">)</span><span class="s3">;</span>
+                <span class="s3">break;</span>
+            <span class="s3">case </span><span class="s5">2</span><span class="s1">:</span>
+                <span class="s1">printf(</span><span class="s2">&quot;Gib den Namen des Prozesses ein den du loeschen moechtest: &quot;</span><span class="s1">)</span><span class="s3">;</span>
+                <span class="s1">scanf(</span><span class="s2">&quot;%s&quot;</span><span class="s3">, </span><span class="s1">pName)</span><span class="s3">;</span>
+                <span class="s1">removeProcess(pName)</span><span class="s3">;</span>
+                <span class="s3">break;</span>
+            <span class="s3">case </span><span class="s5">3</span><span class="s1">:</span>
+                <span class="s1">printList()</span><span class="s3">;</span>
+                <span class="s3">break;</span>
+            <span class="s3">case </span><span class="s5">4</span><span class="s1">:</span>
+                <span class="s1">freeAndExit()</span><span class="s3">;</span>
+                <span class="s3">break;</span>
+            <span class="s3">default</span><span class="s1">:</span>
+                <span class="s3">break;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+
+<span class="s4">/** 
+ * @brief Erstellt ein neues Element vom struct NODE 
+ * @param data Inhalt des Prozesses 
+ * @param name Name des Prozesses 
+ */</span>
+<span class="s3">void </span><span class="s1">createNewElement(</span><span class="s3">int </span><span class="s1">data</span><span class="s3">, char </span><span class="s1">*name) {</span>
+    <span class="s1">NODE *newElement = malloc(</span><span class="s3">sizeof</span><span class="s1">(NODE))</span><span class="s3">;</span>
+    <span class="s1">newElement-&gt;data = data</span><span class="s3">;</span>
+    <span class="s1">newElement-&gt;name = name</span><span class="s3">;</span>
+    <span class="s1">newElement-&gt;next = NULL</span><span class="s3">;</span>
+
+    <span class="s3">if</span><span class="s1">(head == NULL) {</span>
+        <span class="s1">head = newElement</span><span class="s3">;</span>
+    <span class="s1">} </span><span class="s3">else </span><span class="s1">{</span>
+        <span class="s1">NODE *current = head</span><span class="s3">;</span>
+        <span class="s3">while</span><span class="s1">(current-&gt;next != NULL) {</span>
+            <span class="s1">current = current-&gt;next</span><span class="s3">;</span>
+        <span class="s1">}</span>
+        <span class="s1">current-&gt;next = newElement</span><span class="s3">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+
+<span class="s4">/** 
+ * @brief Überschreibt die Liste mit den neuen Prozess 
+ * @param algorithm Ausgewählte Algorithmus 
+ * @param size Die grösse des Prozesses 
+ * @param newName Der Name des Prozesses 
+ * @param newData Inhalt des Prozesses 
+ */</span>
+<span class="s3">void </span><span class="s1">addProcess(</span><span class="s3">int </span><span class="s1">algorithm</span><span class="s3">, int </span><span class="s1">size</span><span class="s3">, char </span><span class="s1">*newName</span><span class="s3">, int </span><span class="s1">newData) {</span>
+    <span class="s3">int </span><span class="s1">firstIndex = </span><span class="s5">0</span><span class="s3">;</span>
+    <span class="s3">switch </span><span class="s1">(algorithm) {</span>
+        <span class="s3">case </span><span class="s1">ALGORITHM_BEST_FIT:</span>
+            <span class="s1">firstIndex = bestFit(size)</span><span class="s3">;</span>
+            <span class="s3">break;</span>
+        <span class="s3">case </span><span class="s1">ALGORITHM_FIRST_FIT:</span>
+            <span class="s1">firstIndex = firstFit(size)</span><span class="s3">;</span>
+            <span class="s3">break;</span>
+        <span class="s3">case </span><span class="s1">ALGORITHM_NEXT_FIT:</span>
+            <span class="s1">firstIndex = nextFit(size)</span><span class="s3">;</span>
+            <span class="s3">break;</span>
+        <span class="s3">case </span><span class="s1">ALGORITHM_WORST_FIT:</span>
+            <span class="s1">firstIndex = worstFit(size)</span><span class="s3">;</span>
+            <span class="s3">break;</span>
+        <span class="s3">default</span><span class="s1">:</span>
+            <span class="s3">break;</span>
+    <span class="s1">}</span>
+
+    <span class="s3">int </span><span class="s1">index = firstIndex</span><span class="s3">;</span>
+    <span class="s3">int </span><span class="s1">count = </span><span class="s5">0</span><span class="s3">;</span>
+    <span class="s1">NODE *firstElement = head</span><span class="s3">;</span>
+    <span class="s3">while</span><span class="s1">(firstElement-&gt;next != NULL &amp;&amp; count != firstIndex) {</span>
+        <span class="s1">firstElement = firstElement-&gt;next</span><span class="s3">;</span>
+        <span class="s1">count++</span><span class="s3">;</span>
+    <span class="s1">}</span>
+
+    <span class="s1">NODE *currentFitElement = firstElement</span><span class="s3">;</span>
+    <span class="s3">while</span><span class="s1">(currentFitElement-&gt;next != NULL &amp;&amp; index != firstIndex + size) {</span>
+        <span class="s1">currentFitElement-&gt;data = newData</span><span class="s3">;</span>
+        <span class="s1">currentFitElement-&gt;name = newName</span><span class="s3">;</span>
+        <span class="s1">index++</span><span class="s3">;</span>
+        <span class="s1">currentFitElement = currentFitElement-&gt;next</span><span class="s3">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+
+<span class="s4">/** 
+ * @brief Sucht den ersten freien Speicherplatz der gross genug ist 
+ * @param size Die grösse des Prozesses 
+ * @return Gibt die Position der ersten freien Position an 
+ */</span>
+<span class="s3">int </span><span class="s1">firstFit(</span><span class="s3">unsigned int </span><span class="s1">size) {</span>
+    <span class="s3">int </span><span class="s1">counter = </span><span class="s5">0</span><span class="s3">;</span>
+    <span class="s3">int </span><span class="s1">index = </span><span class="s5">0</span><span class="s3">;</span>
+    <span class="s3">for</span><span class="s1">(NODE *current = head</span><span class="s3">; </span><span class="s1">current != NULL</span><span class="s3">; </span><span class="s1">current = current-&gt;next) {</span>
+        <span class="s3">if</span><span class="s1">(strcmp(current-&gt;name</span><span class="s3">, </span><span class="s2">&quot;Hole&quot;</span><span class="s1">) == </span><span class="s5">0</span><span class="s1">) {</span>
+            <span class="s1">counter++</span><span class="s3">;</span>
+            <span class="s3">if</span><span class="s1">(counter == size) {</span>
+                <span class="s3">return </span><span class="s1">index + </span><span class="s5">1 </span><span class="s1">- size</span><span class="s3">;</span>
+            <span class="s1">}</span>
+        <span class="s1">} </span><span class="s3">else </span><span class="s1">{</span>
+            <span class="s1">counter = </span><span class="s5">0</span><span class="s3">;</span>
+        <span class="s1">}</span>
+        <span class="s1">index++</span><span class="s3">;</span>
+    <span class="s1">}</span>
+    <span class="s3">return </span><span class="s1">-</span><span class="s5">1</span><span class="s3">;</span>
+<span class="s1">}</span>
+
+<span class="s4">/** 
+ * @brief Fängt beim erstem Durchlauf, an der ersten Stelle der LinkedList an, merkt sich dann aber wo die Suche aufgehört hat, und startet die nächste Suche von dieser Stelle aus 
+ * @param size Die grösse des Prozesses 
+ * @return Gibt die Position der ersten freien Position an 
+ */</span>
+<span class="s3">int </span><span class="s1">nextFit(</span><span class="s3">unsigned int </span><span class="s1">size) {</span>
+    <span class="s3">if</span><span class="s1">(lastElement == NULL) {</span>
+        <span class="s1">lastElement = head</span><span class="s3">;</span>
+    <span class="s1">}</span>
+    <span class="s3">static int </span><span class="s1">i = </span><span class="s5">0</span><span class="s3">;</span>
+    <span class="s3">int </span><span class="s1">blockSize = </span><span class="s5">0</span><span class="s3">;</span>
+
+    <span class="s3">for </span><span class="s1">(NODE *current = lastElement-&gt;next</span><span class="s3">; </span><span class="s1">current != lastElement</span><span class="s3">; </span><span class="s1">current = current-&gt;next) {</span>
+        <span class="s3">if</span><span class="s1">(current-&gt;next != NULL) {</span>
+            <span class="s3">if </span><span class="s1">(blockSize &lt; size) {</span>
+                <span class="s3">if </span><span class="s1">(strcmp(current-&gt;name</span><span class="s3">, </span><span class="s2">&quot;Hole&quot;</span><span class="s1">) == </span><span class="s5">0</span><span class="s1">) {</span>
+                    <span class="s1">blockSize++</span><span class="s3">;</span>
+                <span class="s1">} </span><span class="s3">else </span><span class="s1">{</span>
+                    <span class="s1">blockSize = </span><span class="s5">0</span><span class="s3">;</span>
+                <span class="s1">}</span>
+                <span class="s1">i++</span><span class="s3">;</span>
+            <span class="s1">} </span><span class="s3">else </span><span class="s1">{</span>
+                <span class="s1">lastElement = current</span><span class="s3">;</span>
+                <span class="s3">break;</span>
+            <span class="s1">}</span>
+        <span class="s1">} </span><span class="s3">else </span><span class="s1">{</span>
+            <span class="s1">current = head</span><span class="s3">;</span>
+            <span class="s1">i = </span><span class="s5">0</span><span class="s3">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+    <span class="s3">return </span><span class="s1">i - size</span><span class="s3">;</span>
+<span class="s1">}</span>
+
+<span class="s4">/** 
+ * @brief Sucht die kleinst mögliche Lücke die entweder gleich gross oder größer ist als der angeforderte Speicher 
+ * @param size Die grösse des Prozesses 
+ * @return Gibt die Position der ersten freien Position an 
+ */</span>
+<span class="s3">int </span><span class="s1">bestFit(</span><span class="s3">unsigned int </span><span class="s1">size) {</span>
+    <span class="s3">int </span><span class="s1">bestBlockIndex = -</span><span class="s5">1</span><span class="s3">;</span>
+    <span class="s3">int </span><span class="s1">smallestBlockSize = </span><span class="s5">0</span><span class="s3">;</span>
+    <span class="s3">int </span><span class="s1">index = </span><span class="s5">0</span><span class="s3">;</span>
+    <span class="s3">for </span><span class="s1">(NODE *current = head</span><span class="s3">; </span><span class="s1">current != NULL</span><span class="s3">; </span><span class="s1">current = current-&gt;next) {</span>
+        <span class="s3">if </span><span class="s1">(strcmp(current-&gt;name</span><span class="s3">, </span><span class="s2">&quot;Hole&quot;</span><span class="s1">) == </span><span class="s5">0</span><span class="s1">) {</span>
+            <span class="s3">int </span><span class="s1">blockSize = </span><span class="s5">0</span><span class="s3">;</span>
+            <span class="s3">int </span><span class="s1">j = index</span><span class="s3">;</span>
+            <span class="s4">// This loop counts each consecutive free block</span>
+            <span class="s4">// It runs until the end of the list is reached or until the block size is greater than the requested size</span>
+            <span class="s1">NODE *tmp = current</span><span class="s3">;</span>
+            <span class="s3">while </span><span class="s1">(tmp != NULL &amp;&amp; strcmp(tmp-&gt;name</span><span class="s3">, </span><span class="s2">&quot;Hole&quot;</span><span class="s1">) == </span><span class="s5">0 </span><span class="s1">&amp;&amp; blockSize &lt; size) {</span>
+                <span class="s1">blockSize++</span><span class="s3">;</span>
+                <span class="s1">tmp = tmp-&gt;next</span><span class="s3">;</span>
+                <span class="s1">j++</span><span class="s3">;</span>
+            <span class="s1">}</span>
+            <span class="s4">// This if block checks if the block size is greater than or equal to the requested size and smaller than the current smallest block size found so far</span>
+            <span class="s4">// If the condition is true, the smallest block size is updated and the index of the first block of the smallest size is also saved</span>
+            <span class="s3">if </span><span class="s1">(blockSize &gt;= size &amp;&amp; (smallestBlockSize == </span><span class="s5">0 </span><span class="s1">|| blockSize &lt; smallestBlockSize)) {</span>
+                <span class="s1">bestBlockIndex = index</span><span class="s3">;</span>
+                <span class="s1">smallestBlockSize = blockSize</span><span class="s3">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s1">index++</span><span class="s3">;</span>
+    <span class="s1">}</span>
+    <span class="s4">// Returns the index of the first block of the smallest size found</span>
+    <span class="s3">return </span><span class="s1">bestBlockIndex</span><span class="s3">;</span>
+<span class="s1">}</span>
+
+<span class="s4">/** 
+ * @brief Sucht den größtmöglichen freien Speicherplatz 
+ * @param size Die grösse des Prozesses 
+ * @return Gibt die Position der ersten freien Position an 
+ */</span>
+<span class="s3">int </span><span class="s1">worstFit(</span><span class="s3">unsigned int </span><span class="s1">size) {</span>
+    <span class="s3">int </span><span class="s1">worstBlockIndex = -</span><span class="s5">1</span><span class="s3">;</span>
+    <span class="s3">int </span><span class="s1">largestBlockSize = </span><span class="s5">0</span><span class="s3">;</span>
+    <span class="s3">int </span><span class="s1">index = </span><span class="s5">0</span><span class="s3">;</span>
+    <span class="s3">for</span><span class="s1">(NODE *current = head</span><span class="s3">; </span><span class="s1">current != NULL</span><span class="s3">; </span><span class="s1">current = current-&gt;next) {</span>
+        <span class="s3">if </span><span class="s1">(current-&gt;data == </span><span class="s5">0</span><span class="s1">) {</span>
+            <span class="s3">int </span><span class="s1">blockSize = </span><span class="s5">0</span><span class="s3">;</span>
+            <span class="s3">int </span><span class="s1">j = index</span><span class="s3">;</span>
+            <span class="s3">while </span><span class="s1">(j != MEMORY_SIZE &amp;&amp; current-&gt;data == </span><span class="s5">0</span><span class="s1">) {</span>
+                <span class="s1">blockSize++</span><span class="s3">;</span>
+                <span class="s1">j++</span><span class="s3">;</span>
+            <span class="s1">}</span>
+            <span class="s3">if </span><span class="s1">(blockSize &gt;= size &amp;&amp; blockSize &gt; largestBlockSize) {</span>
+                <span class="s1">worstBlockIndex = index</span><span class="s3">;</span>
+                <span class="s1">largestBlockSize = blockSize</span><span class="s3">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s1">index++</span><span class="s3">;</span>
+    <span class="s1">}</span>
+    <span class="s3">return </span><span class="s1">worstBlockIndex</span><span class="s3">;</span>
+<span class="s1">}</span>
+
+<span class="s4">/** 
+ * @brief Gibt die Liste aus 
+ */</span>
+<span class="s3">void </span><span class="s1">printList() {</span>
+    <span class="s1">NODE *current = head</span><span class="s3">;</span>
+    <span class="s3">int </span><span class="s1">i = </span><span class="s5">0</span><span class="s3">;</span>
+    <span class="s3">while</span><span class="s1">(current != NULL) {</span>
+        <span class="s1">i++</span><span class="s3">;</span>
+        <span class="s1">printf(</span><span class="s2">&quot;Nr. %d: Name: %s | Inhalt: %d | Addresse: %p</span><span class="s3">\n</span><span class="s2">&quot;</span><span class="s3">, </span><span class="s1">i</span><span class="s3">, </span><span class="s1">current-&gt;name</span><span class="s3">, </span><span class="s1">current-&gt;data</span><span class="s3">, </span><span class="s1">current)</span><span class="s3">;</span>
+        <span class="s1">current = current-&gt;next</span><span class="s3">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+
+<span class="s4">/** 
+ * @brief Löscht einen bestimmten Prozess 
+ * @param pName Name des Prozesses 
+ */</span>
+<span class="s3">void </span><span class="s1">removeProcess(</span><span class="s3">char </span><span class="s1">*pName) {</span>
+    <span class="s1">NODE *current = head</span><span class="s3">;</span>
+    <span class="s3">while</span><span class="s1">(current-&gt;next != NULL) {</span>
+        <span class="s3">if</span><span class="s1">(strcmp(current-&gt;name</span><span class="s3">, </span><span class="s1">pName) == </span><span class="s5">0</span><span class="s1">) {</span>
+            <span class="s1">current-&gt;data = </span><span class="s5">0</span><span class="s3">;</span>
+            <span class="s1">current-&gt;name = </span><span class="s2">&quot;Hole&quot;</span><span class="s3">;</span>
+        <span class="s1">}</span>
+        <span class="s1">current = current-&gt;next</span><span class="s3">;</span>
+    <span class="s1">}</span>
+<span class="s1">}</span>
+
+<span class="s4">/** 
+ * @brief Schaut nach ob der angegebene Prozess bereits existiert 
+ * @param pName Name des Prozesses 
+ * @return 0 Wenn der Prozess nicht existiert 
+ */</span>
+<span class="s3">int </span><span class="s1">processExists(</span><span class="s3">char </span><span class="s1">*pName) {</span>
+    <span class="s3">int </span><span class="s1">exists = </span><span class="s5">0</span><span class="s3">;</span>
+    <span class="s3">for</span><span class="s1">(NODE *current = head</span><span class="s3">; </span><span class="s1">current != NULL</span><span class="s3">; </span><span class="s1">current = current-&gt;next) {</span>
+        <span class="s3">if</span><span class="s1">(strcmp(current-&gt;name</span><span class="s3">, </span><span class="s1">pName) == </span><span class="s5">0</span><span class="s1">) {</span>
+            <span class="s1">exists = </span><span class="s5">1</span><span class="s3">;</span>
+            <span class="s3">break;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+    <span class="s3">return </span><span class="s1">exists</span><span class="s3">;</span>
+<span class="s1">}</span>
+
+<span class="s4">/** 
+ * @brief Berechnet wie viel noch Speicherplatz verfügbar ist 
+ * @return Gibt den verfügbaren Speicherplatz zurück 
+ */</span>
+<span class="s3">int </span><span class="s1">getFreeMemSize() {</span>
+    <span class="s3">int </span><span class="s1">freeMemSize = </span><span class="s5">0</span><span class="s3">;</span>
+    <span class="s3">for</span><span class="s1">(NODE *current = head</span><span class="s3">; </span><span class="s1">current != NULL</span><span class="s3">; </span><span class="s1">current = current-&gt;next) {</span>
+        <span class="s3">if</span><span class="s1">(strcmp(current-&gt;name</span><span class="s3">, </span><span class="s2">&quot;Hole&quot;</span><span class="s1">) == </span><span class="s5">0</span><span class="s1">) {</span>
+            <span class="s1">freeMemSize++</span><span class="s3">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+    <span class="s3">return </span><span class="s1">freeMemSize</span><span class="s3">;</span>
+<span class="s1">}</span>
+
+<span class="s4">/** 
+ * @brief De-allokiert die LinkedList und schliesst das Programm mit EXIT_SUCCESS 
+ */</span>
+<span class="s3">void </span><span class="s1">freeAndExit() {</span>
+    <span class="s1">NODE *current</span><span class="s3">;</span>
+    <span class="s3">while </span><span class="s1">(head != NULL) {</span>
+        <span class="s1">current = head</span><span class="s3">;</span>
+        <span class="s1">head = head-&gt;next</span><span class="s3">;</span>
+        <span class="s1">free(current)</span><span class="s3">;</span>
+    <span class="s1">}</span>
+    <span class="s1">exit(EXIT_SUCCESS)</span><span class="s3">;</span>
+<span class="s1">}</span></pre>
+</body>
+</html>

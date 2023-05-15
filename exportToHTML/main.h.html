@@ -1,0 +1,59 @@
+<html>
+<head>
+<title>main.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #bbb529;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #6897bb;}
+.s3 { color: #cc7832;}
+.s4 { color: #808080;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+main.h</font>
+</center></td></tr></table>
+<pre><span class="s0">#ifndef </span><span class="s1">MAIN</span>
+<span class="s0">#define </span><span class="s1">MAIN</span>
+
+    <span class="s0">#define </span><span class="s1">ALGORITHM_BEST_FIT </span><span class="s2">1</span>
+    <span class="s0">#define </span><span class="s1">ALGORITHM_FIRST_FIT </span><span class="s2">2</span>
+    <span class="s0">#define </span><span class="s1">ALGORITHM_NEXT_FIT </span><span class="s2">3</span>
+    <span class="s0">#define </span><span class="s1">ALGORITHM_WORST_FIT </span><span class="s2">4</span>
+
+    <span class="s0">#define </span><span class="s1">MEMORY_SIZE </span><span class="s2">128</span>
+    <span class="s0">#define </span><span class="s1">MAX_PROCESS_NAME_LENGTH </span><span class="s2">5</span>
+    <span class="s3">typedef struct </span><span class="s1">node {</span>
+        <span class="s3">int </span><span class="s1">data</span><span class="s3">;</span>
+        <span class="s3">char </span><span class="s1">*name</span><span class="s3">;</span>
+        <span class="s3">struct </span><span class="s1">node *next</span><span class="s3">;</span>
+    <span class="s1">} NODE</span><span class="s3">;</span>
+
+    <span class="s3">extern void </span><span class="s1">menu()</span><span class="s3">;</span>
+    <span class="s3">extern void </span><span class="s1">createNewElement(</span><span class="s3">int, char </span><span class="s1">*)</span><span class="s3">;</span>
+    <span class="s3">extern void </span><span class="s1">addProcess(</span><span class="s3">int, int, char </span><span class="s1">*</span><span class="s3">, int</span><span class="s1">)</span><span class="s3">;</span>
+    <span class="s3">extern void </span><span class="s1">removeProcess(</span><span class="s3">char </span><span class="s1">*)</span><span class="s3">;</span>
+    <span class="s3">extern void </span><span class="s1">printList()</span><span class="s3">;</span>
+    <span class="s3">extern void </span><span class="s1">freeAndExit()</span><span class="s3">;</span>
+
+    <span class="s3">extern int </span><span class="s1">processExists(</span><span class="s3">char </span><span class="s1">*)</span><span class="s3">;</span>
+    <span class="s3">extern int </span><span class="s1">getFreeMemSize()</span><span class="s3">;</span>
+
+    <span class="s4">// FirstFit sucht den ersten freien Speicherplatz der gross genug ist</span>
+    <span class="s3">extern int </span><span class="s1">firstFit(</span><span class="s3">unsigned int</span><span class="s1">)</span><span class="s3">;</span>
+
+    <span class="s4">// BestFit sucht die kleinst mögliche Lücke die entweder gleich gross oder größer ist als der angeforderte Speicher</span>
+    <span class="s3">extern int </span><span class="s1">bestFit(</span><span class="s3">unsigned int</span><span class="s1">)</span><span class="s3">;</span>
+
+    <span class="s4">// NextFit fängt beim erstem Durchlauf, an der ersten Stelle der LinkedList an,</span>
+    <span class="s4">// merkt sich dann aber wo die Suche aufgehört hat, und startet die nächste Suche von dieser Stelle aus</span>
+    <span class="s3">extern int </span><span class="s1">nextFit(</span><span class="s3">unsigned int</span><span class="s1">)</span><span class="s3">;</span>
+
+    <span class="s4">// WorstFit sucht den größtmöglichen freien Speicherplatz</span>
+    <span class="s3">extern int </span><span class="s1">worstFit(</span><span class="s3">unsigned int</span><span class="s1">)</span><span class="s3">;</span>
+<span class="s0">#endif</span></pre>
+</body>
+</html>
