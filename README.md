@@ -29,7 +29,7 @@ Menu:
 * Hinzufügen von Prozessen zum RAM-Speicher, die grösse kann angegeben werden, der Name des Prozesses ist frei wählbar und man kann zwischen [4 Algorithmen](#algorithmen) aussuchen
 * Durch die möglichkeit Prozesse auch wieder zu entfernen, kann der RAM-Speicher besser simuliert werden, das Programm muss nicht beendet werden, um belegten Speicher freizugeben. 
 * Man kann sich den RAM-Speicher ausgeben lassen, und kann somit feststellen, ob die Simulation korrekt funktioniert 
-* Durch das Beenden mit einem "Clean-Up" (mit der funktion `free()` wird die Liste deallokiert) können sogenannte Memory-Leaks verhindert werden
+* Durch das Beenden mit einem "Clean-Up" (mit der funktion `free()` wird die Liste de-allokiert) können sogenannte Memory-Leaks verhindert werden
 
 # Verwendung mit CLion
   1. Um das Projekt verwenden zu können muss es ([Speicherverwaltung](https://github.com/Nphilip9/Speicherverwaltung/)) zunächst heruntergeladen und entpackt werden.
@@ -45,10 +45,10 @@ Menu:
 # Algorithmen
 | Algorithmus                    | Beschreibung                                                                                                 |
 |:-------------------------------|:-------------------------------------------------------------------------------------------------------------|
-| [`First Fit`](src/main.c#L136) | sucht den ersten freien Speicherplatz der gross genug ist                                                    |
-| [`Next Fit`](src/main.c#L153)  | sucht ab dem zuletzt verwendeten Speicherblock den nächsten verfügbaren Speicherplatz für einen neuen Block. |
+| [`First Fit`](src/main.c#L136) | Sucht den ersten freien Speicherplatz der gross genug ist                                                    |
+| [`Next Fit`](src/main.c#L153)  | Sucht ab dem zuletzt verwendeten Speicherblock den nächsten verfügbaren Speicherplatz für einen neuen Block. |
 | [`Best Fit`](src/main.c#L181)  | Sucht die kleinst mögliche lücke die gleich gross oder größer ist als der angeforderte Speicher              |
-| [`Worst Fit`](src/main.c#L210) | sucht den größtmöglichen freien Speicherplatz                                                                |
+| [`Worst Fit`](src/main.c#L210) | Sucht den größtmöglichen freien Speicherplatz                                                                |
 
 # Code
 Diese Zeile kann verändert werden um den simulierten RAM-Speicher zu vergrössern oder zu verkleinern.

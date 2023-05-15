@@ -46,7 +46,7 @@ void menu() {
                     printf("Geben Sie einen Namen fuer den Prozess (max. %d Zeichen) ein: ", MAX_PROCESS_NAME_LENGTH);
                     scanf("%s", pName);
                     if (processExists(pName) != 0) {
-                        printf("Dieser Prozess existiert bereits! Waehle einen anderen Namen oder loeschen den anderen Prozess\n");
+                        printf("Dieser Prozess existiert bereits! Waehle einen anderen Namen oder loeschen den anderen Prozess!\n");
                     } else if (strlen(pName) > MAX_PROCESS_NAME_LENGTH) {
                         printf("Dieser Name ist zu lang er darf nur maximal %d zeichen lang sein!\n",
                                MAX_PROCESS_NAME_LENGTH);
@@ -255,7 +255,6 @@ int processExists(char *pName) {
     for(NODE *current = head; current != NULL; current = current->next) {
         if(strcmp(current->name, pName) == 0) {
             exists = 1;
-            printf("Yes");
             break;
         }
     }
@@ -273,8 +272,7 @@ int getFreeMemSize() {
 }
 
 void freeAndExit() {
-    NODE *current = head;
-
+    NODE *current;
     while (head != NULL) {
         current = head;
         head = head->next;
