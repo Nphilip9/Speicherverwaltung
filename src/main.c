@@ -11,7 +11,8 @@ int main() {
     // Initialisieren der srand funktion für abwechselnde Zufallszahlen
     srand(time(NULL));
 
-    // Speicher vorreservieren. Register Schlüsselwort für schnelleren Aufruf der variable i
+    // Speicher vorreservieren und aufbauen der Liste (NODE->NODE->...->NULL).
+    // Register Schlüsselwort für schnelleren Aufruf der variable i durch Abspeichern in einem CPU-Register
     for (register int i = 0; i < MEMORY_SIZE; ++i) {
         createNewElement(0, "Hole");
     }
@@ -22,37 +23,50 @@ int main() {
 
 /**
  * @brief Menu der Speicherverwaltung
+ * Zeitkomplex:
  */
 void menu() {
     while(1) {
         int action, memSize, algorithm, freeMemSize;
-        char *pName = malloc(MAX_PROCESS_NAME_LENGTH * sizeof(char));
+        char *pName = malloc(MAX_PROCESS_NAME_LENGTH * sizeof(char)); // O(n)
+
+        // Menu
         printf("Was moechtest du machen?\n");
         printf("1. Prozess zu Speicher hinzufuegen\n");
         printf("2. Prozess aus Speicher loeschen\n");
         printf("3. Speicher ausgeben\n");
         printf("4. Exit\n");
+
         scanf("%d", &action);
+
         switch (action) {
             case 1:
-                freeMemSize = getFreeMemSize();
+                freeMemSize = getFreeMemSize(); // O(m * o)
                 printf("Wie viel Speicher moechtest du verwenden? (Freier Speicherplatz: %d Bit)\n", freeMemSize);
+
+                // Schleifen überprüfen auf richtigkeit der eingegebenen Daten
+                // p
                 do {
                     scanf("%d", &memSize);
+
+                    // Es wird überprüft ob der eingegebene Speicher nicht zu gross ist
                     if(memSize > freeMemSize) {
                         printf("Die eingegebene groesse ist zu gross! Freier Speicherplatz: %d Bit\n", freeMemSize);
                     } else {
                         break;
                     }
                 } while(1);
+                // q
                 do {
                     printf("Geben Sie einen Namen fuer den Prozess (max. %d Zeichen) ein: ", MAX_PROCESS_NAME_LENGTH);
                     scanf("%s", pName);
+
+                    // Es wird überprüft, ob der eingegebene Name bereits existiert
+                    // oder ob die Länge des Namens nicht zu gross ist
                     if (processExists(pName) != 0) {
                         printf("Dieser Prozess existiert bereits! Waehle einen anderen Namen oder loeschen den anderen Prozess!\n");
                     } else if (strlen(pName) > MAX_PROCESS_NAME_LENGTH) {
-                        printf("Dieser Name ist zu lang er darf nur maximal %d zeichen lang sein!\n",
-                               MAX_PROCESS_NAME_LENGTH);
+                        printf("Dieser Name ist zu lang er darf nur maximal %d zeichen lang sein!\n", MAX_PROCESS_NAME_LENGTH);
                     } else {
                         break;
                     }
@@ -64,18 +78,18 @@ void menu() {
                 printf("3. Next Fit\n");
                 printf("4. Worst Fit\n");
                 scanf("%d", &algorithm);
-                addProcess(algorithm, memSize, pName, rand() % 1000 + 1);
+                addProcess(algorithm, memSize, pName, rand() % 1000 + 1); // O(n + m)
                 break;
             case 2:
                 printf("Gib den Namen des Prozesses ein den du loeschen moechtest: ");
                 scanf("%s", pName);
-                removeProcess(pName);
+                removeProcess(pName); // O(n * m)
                 break;
             case 3:
-                printList();
+                printList(); // O(n)
                 break;
             case 4:
-                freeAndExit();
+                freeAndExit(); // O(n)
                 break;
             default:
                 break;
@@ -85,6 +99,7 @@ void menu() {
 
 /**
  * @brief Erstellt ein neues Element vom struct NODE
+ * Zeitkomplexität: O(n)
  * @param data Inhalt des Prozesses
  * @param name Name des Prozesses
  */
@@ -94,10 +109,14 @@ void createNewElement(int data, char *name) {
     newElement->name = name;
     newElement->next = NULL;
 
+    // Es wird überprüft, ob das zu erstellende Element das erste Element in der Liste sein wird.
+    // Sollte es das erste sein, dann wird dieses Element zum Head-Element.
+    // Wenn nicht, wird dieses Element einfach an die Liste angehängt
     if(head == NULL) {
         head = newElement;
     } else {
         NODE *current = head;
+        // Ende der Liste wird gesucht
         while(current->next != NULL) {
             current = current->next;
         }
@@ -107,6 +126,9 @@ void createNewElement(int data, char *name) {
 
 /**
  * @brief Überschreibt die Liste mit den neuen Prozess
+ * Zeitkomplexität: O(n + m)
+ * n = die erste while-Schleife
+ * m = zweite while schleife
  * @param algorithm Ausgewählte Algorithmus
  * @param size Die grösse des Prozesses
  * @param newName Der Name des Prozesses
@@ -131,15 +153,19 @@ void addProcess(int algorithm, int size, char *newName, int newData) {
             break;
     }
 
-    int index = firstIndex;
+    int index = firstIndex; // Der erste gefundene freie Platz in der Liste
     int count = 0;
     NODE *firstElement = head;
+
+    // Es wird die Adresse des Elements gesucht, dass auf der Position 'index' steht
     while(firstElement->next != NULL && count != firstIndex) {
         firstElement = firstElement->next;
         count++;
     }
 
     NODE *currentFitElement = firstElement;
+
+    // Ab der gesuchten Position werden, die Element der Liste zwischen dem ersten freien Platz und dem letzten freien PLatz überschrieben.
     while(currentFitElement->next != NULL && index != firstIndex + size) {
         currentFitElement->data = newData;
         currentFitElement->name = newName;
@@ -150,6 +176,7 @@ void addProcess(int algorithm, int size, char *newName, int newData) {
 
 /**
  * @brief Sucht den ersten freien Speicherplatz der gross genug ist
+ * Zeitkomplexität: O(n)
  * @param size Die grösse des Prozesses
  * @return Gibt die Position der ersten freien Position an
  */
@@ -157,7 +184,7 @@ int firstFit(unsigned int size) {
     int counter = 0;
     int index = 0;
     for(NODE *current = head; current != NULL; current = current->next) {
-        if(strcmp(current->name, "Hole") == 0) {
+        if(current->data == 0) {
             counter++;
             if(counter == size) {
                 return index + 1 - size;
@@ -185,7 +212,7 @@ int nextFit(unsigned int size) {
     for (NODE *current = lastElement->next; current != lastElement; current = current->next) {
         if(current->next != NULL) {
             if (blockSize < size) {
-                if (strcmp(current->name, "Hole") == 0) {
+                if (current->data == 0) {
                     blockSize++;
                 } else {
                     blockSize = 0;
@@ -205,6 +232,7 @@ int nextFit(unsigned int size) {
 
 /**
  * @brief Sucht die kleinst mögliche Lücke die entweder gleich gross oder größer ist als der angeforderte Speicher
+ * Zeitkomplexität: O(n^2)
  * @param size Die grösse des Prozesses
  * @return Gibt die Position der ersten freien Position an
  */
@@ -213,7 +241,7 @@ int bestFit(unsigned int size) {
     int smallestBlockSize = 0;
     int index = 0;
     for (NODE *current = head; current != NULL; current = current->next) {
-        if (strcmp(current->name, "Hole") == 0) {
+        if (current->data == 0) {
             int blockSize = 0;
             int j = index;
             // This loop counts each consecutive free block
@@ -239,6 +267,7 @@ int bestFit(unsigned int size) {
 
 /**
  * @brief Sucht den größtmöglichen freien Speicherplatz
+ * Zeitkomplexität: O(n^2)
  * @param size Die grösse des Prozesses
  * @return Gibt die Position der ersten freien Position an
  */
@@ -266,6 +295,7 @@ int worstFit(unsigned int size) {
 
 /**
  * @brief Gibt die Liste aus
+ * Zeitkomplexität: O(n)
  */
 void printList() {
     NODE *current = head;
@@ -279,6 +309,8 @@ void printList() {
 
 /**
  * @brief Löscht einen bestimmten Prozess
+ * Zeitkomplexität: O(n * m)
+ * m = O(n); Zeitkomplexität von strcmp()
  * @param pName Name des Prozesses
  */
 void removeProcess(char *pName) {
@@ -294,6 +326,8 @@ void removeProcess(char *pName) {
 
 /**
  * @brief Schaut nach ob der angegebene Prozess bereits existiert
+ * Zeitkomplexität: O(n * m)
+ * m = O(n); Zeitkomplexität von strcmp()
  * @param pName Name des Prozesses
  * @return 0 Wenn der Prozess nicht existiert
  */
@@ -310,6 +344,8 @@ int processExists(char *pName) {
 
 /**
  * @brief Berechnet wie viel noch Speicherplatz verfügbar ist
+ * Zeitkomplexität: O(n * m)
+ * m = O(n); Zeitkomplexität von strcmp()
  * @return Gibt den verfügbaren Speicherplatz zurück
  */
 int getFreeMemSize() {
@@ -324,13 +360,20 @@ int getFreeMemSize() {
 
 /**
  * @brief De-allokiert die LinkedList und schliesst das Programm mit EXIT_SUCCESS
+ * Zeitkomplexität: O(n^2)
+ * free() hat eine Komplexität von O(n)
+ * exit() hat eine Komplexität von O(1) also konstant
  */
 void freeAndExit() {
     NODE *current;
+
+    // Der allokierte Speicher wird de-allokiert, indem man sich immer eines weiterbewegt und das vorher löscht.
     while (head != NULL) {
         current = head;
         head = head->next;
         free(current);
     }
+
+    // Am ende wird das Programm beendet
     exit(EXIT_SUCCESS);
 }
