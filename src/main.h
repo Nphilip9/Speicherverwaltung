@@ -6,13 +6,13 @@
     #define ALGORITHM_NEXT_FIT 3
     #define ALGORITHM_WORST_FIT 4
 
-    #define MEMORY_SIZE 45048
-    #define MAX_PROCESS_NAME_LENGTH 5
+    #define MEMORY_SIZE 1048 // Maximallänge der Liste
+    #define MAX_PROCESS_NAME_LENGTH 5 // Maximallänge des Prozessnamens
 
     typedef struct node {
-        int data;
-        char *name;
-        struct node *next;
+        int data; // Inhalt des Prozesses
+        char *name; // Name des Prozesses
+        struct node *next; // Nächstes Element in der Liste
     } NODE;
 
     // Listen relevante Funktionen
