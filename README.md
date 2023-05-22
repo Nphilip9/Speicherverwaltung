@@ -62,10 +62,10 @@ Menu:
 # Algorithmen
 | Algorithmus                    | Beschreibung                                                                                                 |
 |:-------------------------------|:-------------------------------------------------------------------------------------------------------------|
-| [`First Fit`](src/main.c#L136) | Sucht den ersten freien Speicherplatz der gross genug ist                                                    |
-| [`Next Fit`](src/main.c#L153)  | Sucht ab dem zuletzt verwendeten Speicherblock den nächsten verfügbaren Speicherplatz für einen neuen Block. |
-| [`Best Fit`](src/main.c#L181)  | Sucht die kleinst mögliche lücke die gleich gross oder größer ist als der angeforderte Speicher              |
-| [`Worst Fit`](src/main.c#L210) | Sucht den größtmöglichen freien Speicherplatz                                                                |
+| [`First Fit`](src/main.c#L191) | Sucht den ersten freien Speicherplatz der gross genug ist                                                    |
+| [`Next Fit`](src/main.c#L216)  | Sucht ab dem zuletzt verwendeten Speicherblock den nächsten verfügbaren Speicherplatz für einen neuen Block. |
+| [`Best Fit`](src/main.c#L258)  | Sucht die kleinst mögliche lücke die gleich gross oder größer ist als der angeforderte Speicher              |
+| [`Worst Fit`](src/main.c#L294) | Sucht den größtmöglichen freien Speicherplatz                                                                |
 
 # Code
 ### Anpassen der Listenlänge
@@ -92,7 +92,7 @@ typedef struct node {
     struct node *next;
 } NODE;
 ```
-[`main.h`](src/main.h#L10)
+[`main.h`](src/main.h#L12)
 # Lizenz
 MIT License
 
