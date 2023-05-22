@@ -28,7 +28,11 @@ int main() {
 void menu() {
     while(1) {
         int action, memSize, algorithm, freeMemSize;
+
+        // Speicher für Prozessname wird allokiert
         char *pName = malloc(MAX_PROCESS_NAME_LENGTH * sizeof(char));
+
+        // Freier Speicher wird jedes Mal neu berechnet
         freeMemSize = getFreeMemSize();
 
         // Menu
@@ -60,7 +64,7 @@ void menu() {
                     printf("Geben Sie einen Namen fuer den Prozess (max. %d Zeichen) ein: ", MAX_PROCESS_NAME_LENGTH);
                     scanf("%s", pName);
 
-                    // Es wird überprüft, ob der eingegebene Name bereits existiert
+                    // Es wird überprüft, ob der eingegebene Name bereits existiert oder "legal" ist
                     // oder ob die Länge des Namens nicht zu gross ist
                     if (strcmp(pName, "Hole") == 0) {
                         printf("Dieser Name kann nicht gewaehlt werden! Bitte waehle einen anderen Namen.\n");
